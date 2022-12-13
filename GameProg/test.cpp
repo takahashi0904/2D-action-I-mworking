@@ -1,9 +1,24 @@
 #include "DxLib.h"
+#include "SceneMgr.h"
 
-int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
-    ChangeWindowMode(TRUE); // ウィンドウモードに設定
-    DxLib_Init();   // DXライブラリ初期化処理
-    WaitKey();      // キー入力待ち
-    DxLib_End();    // DXライブラリ終了処理
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK);
+
+
+    SceneMgr_Initialize();
+
+
+    while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
+
+        SceneMgr_Update();  //更新
+        SceneMgr_Draw();    //描画
+
+    }
+
+
+    SceneMgr_Finalize();
+
+
+    DxLib_End();
     return 0;
 }
