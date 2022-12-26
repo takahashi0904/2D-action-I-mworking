@@ -20,6 +20,7 @@
 //
 //}
 
+//エネミーの配列
 class Enemy {
 public:
     //エネミー
@@ -32,8 +33,20 @@ public:
     double ey;
     int eHP;*/
 };
-
 Enemy enemy;
+
+
+//弾の配列
+class Tama{
+public:
+  
+    const int max = 10;
+    int x[10];
+    int y[10];
+    int f;
+
+};
+Tama tama;
 
 
 static int time = 0;
@@ -67,8 +80,10 @@ static float lenght_y = 0;
 //int ey;
 //int eHP;
 
-int i = 0;
+int e = 0;
 bool A = false;
+
+
 
 //初期化
 void Game_Initialize() {
@@ -80,11 +95,8 @@ void Game_Initialize() {
 
     SRand(123456); // 乱数の初期値を123456に設定する
 
-    for (int i = 0; i < 5; i++) {
-        enemy.ex[i] = GetRand(640);
-        enemy.ey[i] = GetRand(480);
-        enemy.eHP[i] = 700;
-    }
+
+   
    
     mx = 320;
     my = 240;
@@ -94,7 +106,18 @@ void Game_Initialize() {
     bgx = 320;
     bgy = 240;
 
-    
+    for (int i = 0; i < 5; i++) {
+        tama.x[i] = mx;
+        tama.y[i] = my;
+        tama.f = 0;
+    }
+
+    for (int i = 0; i < 5; i++) {
+        enemy.ex[i] = GetRand(640);
+        enemy.ey[i] = GetRand(480);
+        enemy.eHP[i] = 700;
+    }
+
     A = false;
 
     //敵の位置を初期化
@@ -142,13 +165,40 @@ void Game_Update() {
         bgx += 1;
         enemy.ex[0] += 3;
     }
-    //
+
+    if (CheckHitKey(KEY_INPUT_RIGHT) == 1) {//右
+        tama.f = 1;
+    }
+
+    if (tama.f==1) {
+        tama.x[0]+=5;
+        if (tama.x[0] == 640) {
+            tama.x[0] = mx;
+            tama.f = 0;
+        }
+    }
+    ////弾の左に飛んでいく
+    //if (CheckHitKey(KEY_INPUT_RIGHT) == 1) {
+    //    for (int i = 0; i < tama.max; i++)
+    //    {
+    //        if (tama.f[i] == 1)
+    //        {
+    //            tama.x[i] += 8;
+    //            DrawCircle(tama.x[i] = mx, tama.y[i] = my, 10, GetColor(255, 255, 255), TRUE);
+    //        }
+    //        if (tama.y[i] < 0)
+    //        {
+    //            tama.f[i] = 0;
+    //        }
+    //    }
+    //}
 
     //エネミーの計算
     
     //一体目のHPが１以上だったら
     if (enemy.eHP > 0) {
         //敵が寄ってくる
+
         if (mx <= enemy.ex[0]) {
             enemy.ex[0]--;
         }
@@ -161,6 +211,7 @@ void Game_Update() {
         if (my <= enemy.ey[0]) {
             enemy.ey[0]--;
         }
+
         //一体目の当たり判定
         lenght_x = pow(mx - enemy.ex[0], 2);
         lenght_y = pow(my - enemy.ey[0], 2);
@@ -211,9 +262,9 @@ void Game_Draw() {
    
         if (count % 60 == 0)
         {   
-            enemy.ex[i] = GetRand(640);
-            enemy.ey[i] = GetRand(480);     
-            i++;
+            enemy.ex[e] = GetRand(640);
+            enemy.ey[e] = GetRand(480);     
+            e++;
         }
 
         DrawCircle(enemy.ex[0], enemy.ey[0], 20, GetColor(0, 0, 255), TRUE);
@@ -221,7 +272,8 @@ void Game_Draw() {
         DrawFormatString(400, 380, GetColor(0, 0, 0), "\%d", enemy.ex[0]);
         DrawFormatString(400, 400, GetColor(0, 0, 0), "\%d", enemy.ex[1]);
 
-    
+        DrawCircle(tama.x[0], tama.y[0], 10, GetColor(0, 255, 255), TRUE);
+
 
     //for (int i = 0; i < 3; i++) {
     //    DrawCircle(ex + i * 20, ey, 20, GetColor(0, 0, 255), TRUE);//敵
