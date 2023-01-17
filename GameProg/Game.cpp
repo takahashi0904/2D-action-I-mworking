@@ -28,7 +28,7 @@ public:
     int ex[5];
     int ey[5];
     int eHP[5];
-
+    int ed[5];
  /*   double ex;
     double ey;
     int eHP;*/
@@ -73,6 +73,17 @@ static float lenght = 0;
 static float lenght_x = 0;
 static float lenght_y = 0;
 
+//’e‚Ì“–‚½‚è”»’è
+float bullet = 0;
+float bullet_x = 0;
+float bullet_y = 0;
+
+//“G‚Æ“G‚Ì“–‚½‚è”»’è
+float enemyl = 0;
+float enemyl_x = 0;
+float enemyl_y = 0;
+
+
 //ƒGƒlƒ~[
 //int E[10];
 //int EnemyNum = 1;
@@ -84,24 +95,22 @@ int e = 0;
 bool A = false;
 
 
-
 //‰Šú‰»
 void Game_Initialize() {
     mImageHandle = LoadGraph("images/Scene_Game.png");    //‰æ‘œ‚Ìƒ[ƒh
     py = LoadGraph("‰æ‘œ/Player.png");
     bg = LoadGraph("‰æ‘œ/”wŒi1.png");
+   
 
     //Ž©•ª‚ÌˆÊ’u‰Šú‰»
 
     SRand(123456); // —”‚Ì‰Šú’l‚ð123456‚ÉÝ’è‚·‚é
 
-
-   
    
     mx = 320;
     my = 240;
 
-    HP = 1000;
+    HP = 300;
   
     bgx = 320;
     bgy = 240;
@@ -116,6 +125,7 @@ void Game_Initialize() {
         enemy.ex[i] = GetRand(640);
         enemy.ey[i] = GetRand(480);
         enemy.eHP[i] = 700;
+        enemy.ed[i] = LoadGraph("‰æ‘œ/enemy.png");
     }
 
     A = false;
@@ -144,108 +154,119 @@ void Game_Update() {
 
     }*/
 
-    /*while (HP > 0) {
+   
+    for (int i = 0; i < 5; i++) {
+        //ˆÚ“®
+        if (CheckHitKey(KEY_INPUT_W) == 1) {//ã
+            bgy += 1;
+            enemy.ey[i] += 3;
+        }
+        if (CheckHitKey(KEY_INPUT_S) == 1) {//‰º
+            bgy -= 1;
+            enemy.ey[i] -= 3;
+        }
+        if (CheckHitKey(KEY_INPUT_D) == 1) {//‰E
+            bgx -= 1;
+            enemy.ex[i] -= 3;
+        }
+        if (CheckHitKey(KEY_INPUT_A) == 1) {//¶
+            bgx += 1;
+            enemy.ex[i] += 3;
+        }
+    }
 
-    }*/
-
-    //ˆÚ“®
-    if (CheckHitKey(KEY_INPUT_W) == 1) {//ã
-        bgy += 1;
-        enemy.ey[0] += 3;
-    }
-    if (CheckHitKey(KEY_INPUT_S) == 1) {//‰º
-        bgy -= 1;
-        enemy.ey[0] -= 3;
-    }
-    if (CheckHitKey(KEY_INPUT_D) == 1) {//‰E
-        bgx -= 1;
-        enemy.ex[0] -= 3;
-    }
-    if (CheckHitKey(KEY_INPUT_A) == 1) {//¶
-        bgx += 1;
-        enemy.ex[0] += 3;
-    }
-
+    //’e‚Ìƒtƒ‰ƒbƒO‚ðon‚É‚·‚é
     if (CheckHitKey(KEY_INPUT_RIGHT) == 1) {//‰E
         tama.f = 1;
     }
 
+    //’e‚Ìƒtƒ‰ƒbƒO‚ª‚P‚É‚È‚Á‚½‚ç
     if (tama.f==1) {
-        tama.x[0]+=5;
-        if (tama.x[0] == 640) {
-            tama.x[0] = mx;
-            tama.f = 0;
-        }
+        tama.x[0]+=20;
+        tama.f = 0;
     }
-    ////’e‚Ì¶‚É”ò‚ñ‚Å‚¢‚­
-    //if (CheckHitKey(KEY_INPUT_RIGHT) == 1) {
-    //    for (int i = 0; i < tama.max; i++)
-    //    {
-    //        if (tama.f[i] == 1)
-    //        {
-    //            tama.x[i] += 8;
-    //            DrawCircle(tama.x[i] = mx, tama.y[i] = my, 10, GetColor(255, 255, 255), TRUE);
-    //        }
-    //        if (tama.y[i] < 0)
-    //        {
-    //            tama.f[i] = 0;
-    //        }
-    //    }
-    //}
+
 
     //ƒGƒlƒ~[‚ÌŒvŽZ
-    
-    //ˆê‘Ì–Ú‚ÌHP‚ª‚PˆÈã‚¾‚Á‚½‚ç
-    if (enemy.eHP > 0) {
-        //“G‚ªŠñ‚Á‚Ä‚­‚é
+    for (int i = 0; i < 5; i++) {
+        //ˆê‘Ì–Ú‚ÌHP‚ª‚PˆÈã‚¾‚Á‚½‚ç
+        if (enemy.eHP[i] > 0) {
 
-        if (mx <= enemy.ex[0]) {
-            enemy.ex[0]--;
-        }
-        if (mx >= enemy.ex[0]) {
-            enemy.ex[0]++;
-        }
-        if (my >= enemy.ey[0]) {
-            enemy.ey[0]++;
-        }
-        if (my <= enemy.ey[0]) {
-            enemy.ey[0]--;
-        }
+            //“G‚ªŠñ‚Á‚Ä‚­‚é
+            if (mx <= enemy.ex[i]) {
+                enemy.ex[i]--;
+            }
+            if (mx >= enemy.ex[i]) {
+                enemy.ex[i]++;
+            }
+            if (my >= enemy.ey[i]) {
+                enemy.ey[i]++;
+            }
+            if (my <= enemy.ey[i]) {
+                enemy.ey[i]--;
+            }
 
-        //ˆê‘Ì–Ú‚Ì“–‚½‚è”»’è
-        lenght_x = pow(mx - enemy.ex[0], 2);
-        lenght_y = pow(my - enemy.ey[0], 2);
-        lenght = sqrt(lenght_x + lenght_y);
-        if ((20 + 20) >= lenght) {
-            HP -= 1;
-            enemy.eHP[0] -= 1;
+            //Player‚ÆEnemy‚Ì“–‚½‚è”»’è
+            lenght_x = pow(mx - enemy.ex[i], 2);
+            lenght_y = pow(my - enemy.ey[i], 2);
+            lenght = sqrt(lenght_x + lenght_y);
+            if ((20 + 20) >= lenght) {
+                HP -= 1;
+                enemy.eHP[i] -= 1;
+            }
+
+            
+            enemyl_x = pow(enemy.ex[i] - enemy.ex[i], 2);
+            enemyl_y = pow(enemy.ey[i] - enemy.ey[i], 2);
+            enemyl = sqrt(enemyl_x + enemyl_y);
+            if ((20 + 20) >= enemyl) {
+                //enemy.ex[i]--;
+                enemy.ex[i]++;
+                //enemy.ey[i]++;
+                enemy.ey[i]--;
+                       
+            }
+
+
+            //’e‚Æ“G‚Ì“–‚½‚è”»’è
+            bullet_x = pow(tama.x[i] - enemy.ex[i], 2);
+            bullet_y = pow(tama.y[i] - enemy.ey[i], 2);
+            bullet = sqrt(bullet_x + bullet_y);
+            if ((10 + 20) >= bullet) {
+                enemy.eHP[i] -= 1;
+            }
         }
     }
+  
 
     /*for (int i = 0; i < GetRand(4); i++) {
         enemy.ex[i + 1] = GetRand(640);
         enemy.ey[i + 1] = GetRand(480);
         DrawCircle(enemy.ex[i], enemy.ey[i], 20, GetColor(0, 0, 255), TRUE);
+        break;
     }*/
 
-    if (CheckHitKey(KEY_INPUT_ESCAPE) != 0) { //EscƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
+    if(CheckHitKey(KEY_INPUT_ESCAPE) != 0) { //EscƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
         SceneMgr_ChangeScene(eScene_title);//ƒV[ƒ“‚ðƒƒjƒ…[‚É•ÏX
     }
 
     //“–‚½‚è”»’è‚ÌŒvŽZƒvƒƒOƒ‰ƒ€‚ð‘Å‚¿ž‚ß‚¦‚¦‚¦‚¦‚¦
     //Palayer‚Æ“G‚Ì“–‚½‚è”»’è
 
+    //‘Ì—Í‚ª‚O‚É‚È‚Á‚½‚çƒQ[ƒ€ƒI[ƒo[
     if (HP <= 0) {
         SceneMgr_ChangeScene(eScene_Over);
     }
 
-    if (enemy.eHP <= 0) {
+    //ƒQ[ƒ€ƒNƒŠƒA
+   /* if (enemy.eHP[0] <= 0) {
         SceneMgr_ChangeScene(eScene_Clear);
-    }
+    }*/
 }
 
 //•`‰æ
 void Game_Draw() {
+
     DrawRotaGraph(bgx, bgy, 10, 0, bg, TRUE);//ƒvƒŒƒCƒ„[‚Ì•`‰æ
     DrawString(0, 0, "ƒQ[ƒ€‰æ–Ê‚Å‚·B", GetColor(0, 0, 0));
     DrawString(0, 20, "EscƒL[‚ð‰Ÿ‚·‚Æƒƒjƒ…[‰æ–Ê‚É–ß‚è‚Ü‚·B", GetColor(0, 0, 0));
@@ -253,37 +274,40 @@ void Game_Draw() {
 
     //ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è‚ð•`‰æ
     DrawCircle(mx, my, 20, GetColor(255, 0, 0), TRUE);
+    DrawFormatString(mx, my, GetColor(0, 0, 0), "Player");//•¶Žš—ñ•\Ž¦
     DrawFormatString(0, 100, GetColor(0, 0, 0), "ŒvŽZŽžŠÔ%dƒ~ƒŠ•b", count);//•¶Žš—ñ•\Ž¦
 
-    //“G‚Ì“–‚½‚è”»’è‚ð•`‰æ
-    
-    
 
-   
-        if (count % 60 == 0)
-        {   
-            enemy.ex[e] = GetRand(640);
-            enemy.ey[e] = GetRand(480);     
-            e++;
+    ////“G‚Ì“–‚½‚è”»’è‚ð•`‰æ
+    //if (count % 60 == 0)
+    //{
+    //    enemy.ex[e] = GetRand(640);
+    //    enemy.ey[e] = GetRand(480);
+    //    e++;
+    //}
+
+    //“G‚Ì•\Ž¦
+    //“G‚Ì‘Ì—Í‚ª‚ ‚é‚Æ‚«•`‰æ
+    for (int i = 0; i < 5; i++) {
+        if (enemy.eHP[i] > 0) {
+            DrawCircle(enemy.ex[i], enemy.ey[i], 20, GetColor(0, 0, 255), TRUE);
+            DrawFormatString(enemy.ex[i], enemy.ey[i], GetColor(0, 0, 0), "Enemy");//•¶Žš—ñ•\Ž¦
         }
+    }
+   
+    DrawFormatString(400, 380, GetColor(0, 0, 0), "z\%d", enemy.ex[0]);
+    DrawFormatString(400, 400, GetColor(0, 0, 0), "\%d", enemy.ey[0]);
 
-        DrawCircle(enemy.ex[0], enemy.ey[0], 20, GetColor(0, 0, 255), TRUE);
-        DrawCircle(enemy.ex[1], enemy.ey[1], 20, GetColor(0, 0, 255), TRUE);
-        DrawFormatString(400, 380, GetColor(0, 0, 0), "\%d", enemy.ex[0]);
-        DrawFormatString(400, 400, GetColor(0, 0, 0), "\%d", enemy.ex[1]);
-
-        DrawCircle(tama.x[0], tama.y[0], 10, GetColor(0, 255, 255), TRUE);
+    //’e‚Ì•`‰æ
+    DrawCircle(tama.x[0], tama.y[0], 10, GetColor(0, 255, 255), TRUE);
 
 
     //for (int i = 0; i < 3; i++) {
     //    DrawCircle(ex + i * 20, ey, 20, GetColor(0, 0, 255), TRUE);//“G
-
     //}
 
     DrawFormatString(400, 280, GetColor(0, 0, 0), "Player‚ÌHP%d",HP);//•¶Žš—ñ•\Ž¦
-    DrawFormatString(400, 300, GetColor(0, 0, 0), "Enemy‚ÌHP % d", enemy.eHP);//•¶Žš—ñ•\Ž¦
-    DrawFormatString(mx, my, GetColor(0, 0, 0), "Player");//•¶Žš—ñ•\Ž¦
-    DrawFormatString(enemy.ex[0], enemy.ey[0], GetColor(0, 0, 0), "Enemy");//•¶Žš—ñ•\Ž¦
+    DrawFormatString(400, 300, GetColor(0, 0, 0), "Enemy‚ÌHP % d", enemy.eHP[0]);//•¶Žš—ñ•\Ž¦
 }
 
 //I—¹ˆ—
