@@ -3,9 +3,9 @@
 typedef enum {
     eScene_Menu,    //メニュー画面
     eScene_Game,    //ゲーム画面
-    eScene_Clear,  //クリア画面
-    eScene_Over,  //クリア画面
-    eScene_title,  //クリア画面
+    eScene_oP,  
+    eScene_tP,  
+    eScene_title,  
 
 
 

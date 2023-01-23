@@ -1,8 +1,8 @@
 #include "DxLib.h"
-#include "Clear.h"
 #include "Game.h"
 #include "Menu.h"
-#include "Over.h"
+#include "oP.h"
+#include "tP.h"
 #include "SceneMgr.h"
 #include "Keycode.h"
 #include "title.h"
@@ -43,11 +43,11 @@ void SceneMgr_Update() {
     case eScene_Game:
         Game_Update();
         break;
-    case eScene_Clear:
-        Clear_Update();
+    case eScene_oP:
+        oP_Update();
         break;
-    case eScene_Over:
-        Over_Update();
+    case eScene_tP:
+        tP_Update();
         break;
     
     }
@@ -65,11 +65,11 @@ void SceneMgr_Draw() {
     case eScene_Game:
         Game_Draw();
         break;
-    case eScene_Clear:
-        Clear_Draw();
+    case eScene_oP:
+        oP_Draw();
         break;
-    case eScene_Over:
-        Over_Draw();
+    case eScene_tP:
+        tP_Draw();
         break;
     
     }
@@ -92,11 +92,11 @@ static void SceneMgr_InitializeModule(eScene scene) {
     case eScene_Game:
         Game_Initialize();
         break;
-    case eScene_Clear:
-        Clear_Initialize();
+    case eScene_oP:
+        oP_Initialize();
         break;
-    case eScene_Over:
-        Over_Initialize();
+    case eScene_tP:
+        tP_Initialize();
         break;
   
     }
@@ -114,12 +114,11 @@ static void SceneMgr_FinalizeModule(eScene scene) {
     case eScene_Game:
         Game_Finalize();
         break;
-    case eScene_Clear:
-        Clear_Finalize();
+    case eScene_oP:
+        oP_Finalize();
         break;
-    case eScene_Over:
-        Over_Finalize();
+    case eScene_tP:
+        tP_Finalize();
         break;
-   
     }
 }

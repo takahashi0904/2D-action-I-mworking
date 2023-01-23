@@ -1,6 +1,0 @@
-#pragma once
-
-void Clear_Initialize();//‰Šú‰»
-void Clear_Update();//XV
-void Clear_Draw();//•`‰æ
-void Clear_Finalize();//I—¹ˆ—

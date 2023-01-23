@@ -45,12 +45,12 @@ void title_Update() {
         NowSelect = (NowSelect + (eMenu_Num - 1)) % eMenu_Num;//選択状態を一つ上げる
         Flag = false;
     }
-    if (CheckHitKey(KEY_INPUT_C) == 1) {//左
-        SceneMgr_ChangeScene(eScene_Clear);//シーンを設定画面に変更
+    if (CheckHitKey(KEY_INPUT_O) == 1) {//左
+        SceneMgr_ChangeScene(eScene_oP);//シーンを設定画面に変更
 
     }
-    if (CheckHitKey(KEY_INPUT_O) == 1) {//左
-        SceneMgr_ChangeScene(eScene_Over);//シーンを設定画面に変更
+    if (CheckHitKey(KEY_INPUT_T) == 1) {//左
+        SceneMgr_ChangeScene(eScene_tP);//シーンを設定画面に変更
 
     }
     if (CheckHitKey(KEY_INPUT_RETURN) != 0) {//エンターキーが押されたら
