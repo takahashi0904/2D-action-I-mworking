@@ -5,24 +5,7 @@
 //#define OPLAYER 5
 //#define TPLAYER 5
 
-
-//弾の配列
-//class Tama{
-//public:
-//  
-//    int omax = OPLAYER;
-//    float ox[OPLAYER];
-//    float oy[OPLAYER];
-//    bool of;
-//
-//    int tmax = TPLAYER;
-//    float tx[TPLAYER];
-//    float ty[TPLAYER];
-//    bool tf;
-//};
-//Tama tama;
-
-
+//Playerのデータ
 class Player {
 public:
     //Playerの座標
@@ -46,11 +29,10 @@ Player Player1;
 Player Player2;
 
 //時間
-static int time = 0;
-static int count = 0;
+int time = 0;
+int count = 0;
 
-static int mImageHandle;    //画像ハンドル格納用変数
-static int py;
+int mImageHandle;    //画像ハンドル格納用変数
 
 //画像
 int bg;
@@ -58,11 +40,12 @@ int bullet;
 
 //初期化
 void Game_Initialize() {
+    //画像
     mImageHandle = LoadGraph("images/Scene_Game.png");    //画像のロード
     bg = LoadGraph("画像/sea.png");
     bullet = LoadGraph("画像/bullet.png");
 
-    //Playerの値を初期化
+    //Player1の値を初期化
     Player1.x = 320;
     Player1.y = 40;
     Player1.HP = 100;
@@ -71,6 +54,7 @@ void Game_Initialize() {
     Player1.f = false;
     Player1.p = LoadGraph("画像/1P.png");
 
+    //Player2の値を初期化
     Player2.x = 320;
     Player2.y = 440;
     Player2.HP = 100;
@@ -87,6 +71,7 @@ void Game_Update() {
     count++;
     time = count / 100;
 
+    //Player同士の間合いを詰める
     if (Player1.y < 180) {
         Player1.y += 0.05;
         Player1.by += 0.05;
@@ -114,7 +99,6 @@ void Game_Update() {
     if (CheckHitKey(KEY_INPUT_S) == 1) {//下
         Player1.f = true;
     }
-
     //2Pの移動と攻撃
     if (CheckHitKey(KEY_INPUT_RIGHT) == 1) {//右
         if (Player2.x!= 620) {
@@ -153,15 +137,14 @@ void Game_Update() {
         }     
     }
 
-    //1pの当たり判定
+    //1pの当たり判定  //当たった時
     Player1.lx = pow(Player2.bx - Player1.x, 2);
     Player1.ly = pow(Player2.by - Player1.y, 2);
     Player1.l = sqrt(Player1.lx + Player1.ly);
     if ((10 + 20) >= Player1.l) {
         Player1.HP -= 1;
     }
-
-    //2pの当たり判定
+    //2pの当たり判定　当たった時
     Player2.lx = pow(Player1.bx - Player2.x, 2);
     Player2.ly = pow(Player1.by - Player2.y, 2);
     Player2.l = sqrt(Player2.lx + Player2.ly);
@@ -169,6 +152,8 @@ void Game_Update() {
         Player2.HP -= 1;
     }
 
+    /////シーン移動/////
+    
     //１ｐの勝ち
     if (Player2.HP <= 0) {
         SceneMgr_ChangeScene(eScene_oP);
@@ -192,19 +177,19 @@ void Game_Draw() {
     //１Pの当たり判定を描画
     DrawRotaGraph(Player1.bx, Player1.by, 1, 0, bullet, TRUE);//1p bullet
     DrawRotaGraph(Player1.x, Player1.y, 2, 0, Player1.p, TRUE);//プレイヤーの描画
-   // DrawCircle(ox, oy, 20, GetColor(255, 0, 0), TRUE);
+    //DrawCircle(ox, oy, 20, GetColor(255, 0, 0), TRUE);//当たり判定を描画
     DrawFormatString(Player1.x - 45, Player1.y - 45, GetColor(0, 0, 0), "1P");//プレイヤー名
     DrawFormatString(Player1.x - 45, Player1.y - 30, GetColor(0, 0, 0), "HP%d", Player1.HP);//HP
 
 
-     //2Pの当たり判定を描画
+     //2Pの描画
     DrawRotaGraph(Player2.bx, Player2.by, 1, 0, bullet, TRUE);//1p bullet
     DrawRotaGraph(Player2.x, Player2.y, 2, 0, Player2.p, TRUE);//プレイヤーの描画
-   // DrawCircle(ox, oy, 20, GetColor(255, 0, 0), TRUE);
-    DrawFormatString(Player2.x + 45, Player2.y + 45, GetColor(0, 0, 0), "2P");//プレイヤー名
-    DrawFormatString(Player2.x + 45, Player2.y + 30, GetColor(0, 0, 0), "HP%d", Player2.HP);//HP
+    //DrawCircle(ox, oy, 20, GetColor(255, 0, 0), TRUE);//当たり判定を描画
+    DrawFormatString(Player2.x + 45, Player2.y + 30, GetColor(0, 0, 0), "2P");//プレイヤー名
+    DrawFormatString(Player2.x + 45, Player2.y + 45, GetColor(0, 0, 0), "HP%d", Player2.HP);//HP
 
-
+    //時間を描画
     //DrawFormatString(0, 100, GetColor(0, 0, 0), "計算時間%dミリ秒", count);//文字列表示
     //DrawFormatString(30, 120, GetColor(0, 0, 0), "%d秒", time);//文字列表示
 
